@@ -1,75 +1,71 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "❄️ FrostHub | Steal a Brainrot",
-   LoadingTitle = "FrostHub Loading...",
-   LoadingSubtitle = "by Gemini",
-   ConfigurationSaving = {
-      Enabled = false
-   }
+   Name = "FrostHub",
+   LoadingTitle = "FrostHub",
+   LoadingSubtitle = "Xeno Edition",
+   ConfigurationSaving = { Enabled = false }
 })
 
-local InfinityJumpEnabled = false
-local AutoGrabEnabled = false
-local SpeedBoostEnabled = false
-local WalkSpeedValue = 50
+local InfJump = false
+local AutoG = false
+local SpdEnabled = false
+local SpdVal = 50
 
--- Auto Grab
 task.spawn(function()
     while task.wait(0.1) do
-        if AutoGrabEnabled then
-            for _, obj in ipairs(workspace:GetDescendants()) do
-                if obj:IsA("TouchTransmitter") and obj.Parent:FindFirstChild("Handle") then
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, obj.Parent, 0)
-                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, obj.Parent, 1)
+        if AutoG then
+            for _, v in ipairs(workspace:GetDescendants()) do
+                if v:IsA("TouchTransmitter") and v.Parent:FindFirstChild("Handle") then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1)
                 end
             end
         end
     end
 end)
 
--- Infinity Jump
 game:GetService("UserInputService").JumpRequest:Connect(function()
-    if InfinityJumpEnabled then
+    if InfJump then
         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
     end
 end)
 
-local MainTab = Window:CreateTab("Main", 4483362458)
+local Tab = Window:CreateTab("Main", 4483362458)
 
-MainTab:CreateToggle({
+Tab:CreateToggle({
    Name = "Speed Boost",
    CurrentValue = false,
-   Callback = function(Value)
-      SpeedBoostEnabled = Value
-      if not Value then game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16 end
+   Callback = function(v)
+      SpdEnabled = v
+      if not v then game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16 end
    end,
 })
 
-MainTab:CreateSlider({
-   Name = "Speed Amount",
+Tab:CreateSlider({
+   Name = "Speed Value",
    Range = {16, 250},
    Increment = 1,
    CurrentValue = 50,
-   Callback = function(Value) WalkSpeedValue = Value end,
+   Callback = function(v) SpdVal = v end,
 })
 
-MainTab:CreateToggle({
+Tab:CreateToggle({
    Name = "Infinity Jump",
    CurrentValue = false,
-   Callback = function(Value) InfinityJumpEnabled = Value end,
+   Callback = function(v) InfJump = v end,
 })
 
-MainTab:CreateToggle({
+Tab:CreateToggle({
    Name = "Auto Grab",
    CurrentValue = false,
-   Callback = function(Value) AutoGrabEnabled = Value end,
+   Callback = function(v) AutoG = v end,
 })
 
 task.spawn(function()
     while task.wait(0.1) do
-        if SpeedBoostEnabled and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeedValue
+        if SpdEnabled and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = SpdVal
         end
     end
 end)
