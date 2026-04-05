@@ -5,24 +5,20 @@ local Window = Rayfield:CreateWindow({
    LoadingTitle = "FrostHub Loading...",
    LoadingSubtitle = "by Gemini",
    ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "FrostHub_Config",
-      FileName = "BrainrotSettings"
+      Enabled = false
    }
 })
 
--- Variables za funkciite
 local InfinityJumpEnabled = false
 local AutoGrabEnabled = false
 local SpeedBoostEnabled = false
 local WalkSpeedValue = 50
 
--- Auto Grab Logika
+-- Auto Grab
 task.spawn(function()
     while task.wait(0.1) do
         if AutoGrabEnabled then
             for _, obj in ipairs(workspace:GetDescendants()) do
-                -- Proverka za "Brainrot" predmeti (promeni imeto, ako igrata go nariha razlichno)
                 if obj:IsA("TouchTransmitter") and obj.Parent:FindFirstChild("Handle") then
                     firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, obj.Parent, 0)
                     firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, obj.Parent, 1)
@@ -32,25 +28,21 @@ task.spawn(function()
     end
 end)
 
--- Infinity Jump Logika
+-- Infinity Jump
 game:GetService("UserInputService").JumpRequest:Connect(function()
     if InfinityJumpEnabled then
         game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
     end
 end)
 
--- GUI Tabs
-local MainTab = Window:CreateTab("Main Functions", 4483362458)
+local MainTab = Window:CreateTab("Main", 4483362458)
 
--- Speed Boost Toggle & Slider
 MainTab:CreateToggle({
    Name = "Speed Boost",
    CurrentValue = false,
    Callback = function(Value)
       SpeedBoostEnabled = Value
-      if not Value then
-          game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-      end
+      if not Value then game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16 end
    end,
 })
 
@@ -58,41 +50,26 @@ MainTab:CreateSlider({
    Name = "Speed Amount",
    Range = {16, 250},
    Increment = 1,
-   Suffix = "Speed",
    CurrentValue = 50,
-   Callback = function(Value)
-      WalkSpeedValue = Value
-   end,
+   Callback = function(Value) WalkSpeedValue = Value end,
 })
 
--- Infinity Jump Toggle
 MainTab:CreateToggle({
    Name = "Infinity Jump",
    CurrentValue = false,
-   Callback = function(Value)
-      InfinityJumpEnabled = Value
-   end,
+   Callback = function(Value) InfinityJumpEnabled = Value end,
 })
 
--- Auto Grab Toggle
 MainTab:CreateToggle({
-   Name = "Auto Grab (Brainrot)",
+   Name = "Auto Grab",
    CurrentValue = false,
-   Callback = function(Value)
-      AutoGrabEnabled = Value
-      if Value then
-          Rayfield:Notify({Title = "FrostHub", Content = "Auto Grab is now ACTIVE", Duration = 3})
-      end
-   end,
+   Callback = function(Value) AutoGrabEnabled = Value end,
 })
 
--- Loop za Speed (za da ne se resetva pri umirane)
 task.spawn(function()
     while task.wait(0.1) do
-        if SpeedBoostEnabled and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+        if SpeedBoostEnabled and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
             game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeedValue
         end
     end
 end)
-
-Rayfield:Notify({Title = "FrostHub Loaded!", Content = "Enjoy stealing those brainrots!", Duration = 5})
